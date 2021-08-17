@@ -1,2 +1,4 @@
 # Spider-RPi-DarkPaw
-My software for robot Adeept DarkPaw due to weak orginal software in my opinion.
+
+My software for Adeept® DarkPaw Bionic Quadruped Spider Robot Kit due to defective orginal software in my opinion.
+Not ready, just started building it :)
