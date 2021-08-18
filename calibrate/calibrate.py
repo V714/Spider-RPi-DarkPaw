@@ -29,7 +29,7 @@ def calibration():
     servo_max = [0] * 12
 
     try:
-        f = open("servo_data.v7", "r")
+        f = open("calibrate/servo_data.v7", "r")
         data = f.read()
         file_found = True
         f.close()
@@ -101,7 +101,7 @@ def calibration():
             calibrate_screen(servo_now,servo_direction,file_found,servo_min,servo_max)
         elif key == keys.ENTER:
             data="sv&&servos."+str(servo_min[0])+"."+str(servo_min[1])+"."+str(servo_min[2])+"."+str(servo_min[3])+"."+str(servo_min[4])+"."+str(servo_min[5])+"."+str(servo_min[6])+"."+str(servo_min[7])+"."+str(servo_min[8])+"."+str(servo_min[9])+"."+str(servo_min[10])+"."+str(servo_min[11])+"."+str(servo_max[0])+"."+str(servo_max[1])+"."+str(servo_max[2])+"."+str(servo_max[3])+"."+str(servo_max[4])+"."+str(servo_max[5])+"."+str(servo_max[6])+"."+str(servo_max[7])+"."+str(servo_max[8])+"."+str(servo_max[9])+"."+str(servo_max[10])+"."+str(servo_max[11])+".enddata#"
-            f = open("servo_data.v7", "w")
+            f = open("calibrate/servo_data.v7", "w")
             f.write(data)
             f.close()
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -111,4 +111,5 @@ def calibration():
 
 if __name__ == "__main__":
 
-    calibration()
+    print("Use settings in main.py to calibrate...")
+    exit()
