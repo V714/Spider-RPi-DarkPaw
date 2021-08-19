@@ -2,7 +2,6 @@ from getkey import getkey, keys
 import os
 import time
 
-
 def file_detect(found):
     if found:
         return "Data file found!"
@@ -105,11 +104,11 @@ def calibration():
             f.write(data)
             f.close()
             os.system('cls' if os.name == 'nt' else 'clear')
-            exit()
+            break
 
 
 
 if __name__ == "__main__":
 
-    print("Use settings in main.py to calibrate...")
+    print("Use Calibration in settings.py to calibrate...")
     exit()
