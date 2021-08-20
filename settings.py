@@ -4,8 +4,8 @@ import os
 import time
 
 file_found = False
-servo_min = [0] * 12
-servo_max = [0] * 12
+servo_min = [300] * 12
+servo_max = [300] * 12
 data = ""
 
 def get_data():
