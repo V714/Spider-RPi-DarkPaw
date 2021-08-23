@@ -28,12 +28,13 @@ def get_data():
         print("No calibration file!")
         exit()
 
+
 def servo(x,value):
+    value = int(value)
     if value>100 or value<0:
         print("Wrong value! (expect 0-100)")
     else:
         pwm.set_pwm(x,0,((servo_min[x])+((  (servo_max[x]-servo_min[x])/100) * value ) )  )
-
 
 
 if __name__ == "__main__":
