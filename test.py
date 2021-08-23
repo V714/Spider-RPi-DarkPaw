@@ -30,7 +30,13 @@ def get_data():
 
 
 def servo(x,value):
-    value = int(value)
+    
+    try:
+        value = int(value)
+    except:
+        print("You need to enter a number in range 0-100!")
+        pass
+
     if value>100 or value<0:
         print("Wrong value! (expect 0-100)")
     else:
@@ -38,5 +44,6 @@ def servo(x,value):
 
 
 if __name__ == "__main__":
+    get_data()
     while(True):
-        servo(3,input('\nEnter value: '))
+        servo(2,input('\nEnter value: '))
