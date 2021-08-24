@@ -110,6 +110,7 @@ def spider_pos(position="none"):
         leg(2,"c")
         time.sleep(0.3)
         leg(2,"n")
+        leg(2,"u")
         leg(3,"d")
         time.sleep(0.5)
         leg(3,"f")
@@ -212,7 +213,7 @@ def leg_test_menu():
 
 
 
-def position_menu_screen(leg):
+def position_menu_screen():
     print(f"\n  ############################ Spider Settings ############################\n")
     print(f"    Press: u - Up \n")
     print(f"           d - Down \n")
