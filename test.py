@@ -228,7 +228,7 @@ def position_test_menu():
     spider_pos("default")
     time.sleep(2)
     os.system('cls' if os.name == 'nt' else 'clear')
-    leg_menu_screen()
+    position_menu_screen()
 
     while(True):
         key = getkey()
@@ -239,7 +239,7 @@ def position_test_menu():
             spider_pos("default")
             time.sleep(1)
             os.system('cls' if os.name == 'nt' else 'clear')
-            leg_menu_screen()
+            position_menu_screen()
 
         elif key == 'd':
             spider_pos("down")
@@ -247,7 +247,7 @@ def position_test_menu():
             spider_pos("default")
             time.sleep(1)
             os.system('cls' if os.name == 'nt' else 'clear')
-            leg_menu_screen()
+            position_menu_screen()
 
         elif key == 'f':
             spider_pos("floor")
@@ -255,7 +255,7 @@ def position_test_menu():
             spider_pos("default")
             time.sleep(1)
             os.system('cls' if os.name == 'nt' else 'clear')
-            leg_menu_screen()
+            position_menu_screen()
 
         elif key == 'c':
             spider_pos("ceiling")
@@ -263,7 +263,7 @@ def position_test_menu():
             spider_pos("default")
             time.sleep(1)
             os.system('cls' if os.name == 'nt' else 'clear')
-            leg_menu_screen()
+            position_menu_screen()
 
         elif key == 's':
             spider_pos("show_leg")
@@ -271,7 +271,7 @@ def position_test_menu():
             spider_pos("default")
             time.sleep(1)
             os.system('cls' if os.name == 'nt' else 'clear')
-            leg_menu_screen()
+            position_menu_screen()
 
         elif key == 'Q':
             exit()
