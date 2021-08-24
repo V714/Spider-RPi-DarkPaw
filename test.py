@@ -43,13 +43,13 @@ def servo(x,value):
         pwm.set_pwm(x,0,int((servo_min[x])+((  (servo_max[x]-servo_min[x])/100) * value ) )  )
 
 def leg(which,position="none"):
-    if which == '1':
+    if int(which) == 1:
         which = [0,1,2]
-    elif which == '2':
+    elif int(which) == 2:
         which = [3,4,5]
-    elif which == '3':
+    elif int(which) == 3:
         which = [6,7,8]
-    elif which == '4':
+    elif int(which) == 4:
         which = [9,10,11]
     else:
         print("Wrong value, expected number in range 1-4!")
