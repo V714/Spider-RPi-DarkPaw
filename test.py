@@ -299,7 +299,7 @@ def accel_test_menu():
 
         os.system('cls' if os.name == 'nt' else 'clear')
         accel_menu_screen(accelerometer_data['x'],accelerometer_data['y'],accelerometer_data['z'])
-        time.sleep(0.05)
+        time.sleep(0.15)
 
 
 
