@@ -4,16 +4,26 @@ import os
 import time
 import Adafruit_PCA9685
 from mpu6050 import mpu6050
+import RPi.GPIO as GPIO
 
 pwm = Adafruit_PCA9685.PCA9685()
 pwm.set_pwm_freq(50)
 
 accel = mpu6050(0x68)
 
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(12,GPIO.OUT)
+GPIO.setup(5,GPIO.OUT)
+buzzer = GPIO.PWM(12,440)
+
+# 5 BCM - Light
+# 12 BCM - Buzzer
+
 file_found = False
 servo_min = [300] * 12
 servo_max = [300] * 12
 data = ""
+
 
 def get_data():
     global file_found
@@ -31,6 +41,13 @@ def get_data():
         exit()
 
 
+def eyelight(bool):
+    if bool:
+        GPIO.output(5,GPIO.HIGH)
+    else:
+        GPIO.output(5,GPIO.LOW)
+
+
 def servo(x,value):
     
     try:
@@ -43,6 +60,7 @@ def servo(x,value):
         print("Wrong value! (expect 0-100)")
     else:
         pwm.set_pwm(x,0,int((servo_min[x])+((  (servo_max[x]-servo_min[x])/100) * value ) )  )
+
 
 def leg(which,position="none"):
     if int(which) == 1:
@@ -74,6 +92,7 @@ def leg(which,position="none"):
         servo(which[2],100)
     elif position == "n":
         servo(which[2],0)
+
 
 def spider_pos(position="none"):
     all_legs = [1,2,3,4]
@@ -135,9 +154,6 @@ def spider_pos(position="none"):
         servo(0,100)
 
 
-
-
-
 def leg_menu_screen(leg):
     print(f"\n  ############################ Spider Settings ############################\n")
     print(f"    Press: u - Up \n")
@@ -151,9 +167,8 @@ def leg_menu_screen(leg):
     print(f"           D - Next Leg \n\n")
     print(f"           Q - Exit \n")
 
+
 def leg_test_menu():
-
-
     print("Entering test...")
     actual_leg=1
     time.sleep(1)
@@ -213,8 +228,6 @@ def leg_test_menu():
             exit()
 
 
-
-
 def position_menu_screen():
     print(f"\n  ############################ Spider Settings ############################\n")
     print(f"    Press: u - Up \n")
@@ -224,8 +237,8 @@ def position_menu_screen():
     print(f"           s - Show Leg \n\n")
     print(f"           Q - Exit \n")
 
-def position_test_menu():
 
+def position_test_menu():
 
     print("Entering Position Test Menu...")
     spider_pos("default")
@@ -279,6 +292,7 @@ def position_test_menu():
         elif key == 'Q':
             exit()
 
+
 def accel_menu_screen(x,y,z):
     print(f"\n  ############################ Spider Settings ############################\n")
     print(f"    \n\n\n")
@@ -287,9 +301,8 @@ def accel_menu_screen(x,y,z):
     print(f"           Z: {z} \n\n\n")
     print(f"           Ctrl+C - Exit \n")
 
+
 def accel_test_menu():
-
-
     print("Entering accelerometer test...")
     time.sleep(1)
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -305,5 +318,19 @@ def accel_test_menu():
 
 if __name__ == "__main__":
     get_data()
+    print("Hello world...")
+    buzzer.ChangeFrequency(3)
+    time.sleep(1)
+    buzzer.stop()
+    time.sleep(2)
+    eyelight(True)
+    time.sleep(0.3)
+    eyelight(False)
+    time.sleep(0.3)
+    eyelight(True)
+    time.sleep(0.3)
+    eyelight(False)
+    time.sleep(1)
+    
     accel_test_menu()
     
