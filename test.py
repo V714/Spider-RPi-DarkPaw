@@ -16,8 +16,9 @@ GPIO.setup(12,GPIO.OUT)
 GPIO.setup(5,GPIO.OUT)
 buzzer = GPIO.PWM(12,440)
 
-# 5 BCM - Light
-# 12 BCM - Buzzer
+# RPi Connections: #
+#   5 BCM - Light
+#  12 BCM - Buzzer
 
 file_found = False
 servo_min = [300] * 12
