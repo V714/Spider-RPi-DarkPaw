@@ -2,11 +2,13 @@ from getkey import getkey, keys
 from calibrate import calibrate as clb
 import os
 import time
-
 import Adafruit_PCA9685
+from mpu6050 import mpu6050
 
 pwm = Adafruit_PCA9685.PCA9685()
 pwm.set_pwm_freq(50)
+
+accel = mpu6050(0x68)
 
 file_found = False
 servo_min = [300] * 12
@@ -212,7 +214,7 @@ def leg_test_menu():
 
 
 
-def position_menu_screen(leg):
+def position_menu_screen():
     print(f"\n  ############################ Spider Settings ############################\n")
     print(f"    Press: u - Up \n")
     print(f"           d - Down \n")
@@ -276,9 +278,31 @@ def position_test_menu():
         elif key == 'Q':
             exit()
 
+def accel_menu_screen(x,y,z):
+    print(f"\n  ############################ Spider Settings ############################\n")
+    print(f"    \n\n\n")
+    print(f"           X: {x} \n")
+    print(f"           Y: {y} \n")
+    print(f"           Z: {z} \n\n\n")
+    print(f"           Ctrl+C - Exit \n")
+
+def accel_test_menu():
+
+
+    print("Entering accelerometer test...")
+    time.sleep(1)
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+    while(True):
+        accelerometer_data = accel.get_accel_data()
+
+        os.system('cls' if os.name == 'nt' else 'clear')
+        accel_menu_screen(accelerometer_data['x'],accelerometer_data['y'],accelerometer_data['z'])
+        time.sleep(0.05)
+
 
 
 if __name__ == "__main__":
     get_data()
-    position_test_menu()
+    accel_test_menu()
     
