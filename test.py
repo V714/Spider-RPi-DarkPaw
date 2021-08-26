@@ -313,6 +313,11 @@ def accel_test_menu():
 
         os.system('cls' if os.name == 'nt' else 'clear')
         accel_menu_screen(accelerometer_data['x'],accelerometer_data['y'],accelerometer_data['z'])
+        if accelerometer_data['z'] < -4:
+            buzzer.start(50)
+            buzzer.ChangeFrequency(7)
+        else:
+            buzzer.stop()
         time.sleep(0.15)
 
 
@@ -334,5 +339,19 @@ if __name__ == "__main__":
     eyelight(False)
     time.sleep(1)
     spider_pos("default")
+    buzzer.start(30)
+    buzzer.ChangeFrequency(440)
+    time.sleep(0.1)
+    buzzer.stop()
+    time.sleep(0.1)
+    buzzer.start(30)
+    buzzer.ChangeFrequency(880)
+    time.sleep(0.4)
+    buzzer.stop()
+    time.sleep(0.1)
+    buzzer.start(30)
+    buzzer.ChangeFrequency(698)
+    time.sleep(0.1)
+    buzzer.stop()
     accel_test_menu()
     
