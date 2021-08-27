@@ -93,7 +93,8 @@ def leg(which,position="none"):
         servo(which[2],100)
     elif position == "n":
         servo(which[2],0)
-
+    elif position == "h":
+        servo(which[0],50)
 
 def spider_pos(position="none"):
     all_legs = [1,2,3,4]
@@ -321,12 +322,12 @@ def accel_test_menu():
         else:
             buzzer.stop()
 
-        if accelerometer_data['x'] < -5 and accelerometer_data['y'] > -2 and accelerometer_data['y'] < 2 and accelerometer_data['z'] > -2 and accelerometer_data['z'] < 2:
+        if accelerometer_data['x'] < -6 and accelerometer_data['y'] > -2 and accelerometer_data['y'] < 2 and accelerometer_data['z'] > -2 and accelerometer_data['z'] < 5:
             front+=1
         else:
             front=0
 
-        if front > 19:
+        if front > 10:
             buzzer.start(30)
             buzzer.ChangeFrequency(880)
             time.sleep(0.1)
@@ -335,21 +336,25 @@ def accel_test_menu():
             buzzer.start(30)
             buzzer.ChangeFrequency(880)
             time.sleep(0.1)
+            buzzer.stop()
             leg(2,'o')
             leg(4,'o')
             time.sleep(0.5)
             leg(1,'c')
             leg(3,'c')
-            time.sleep(2)
+            time.sleep(0.5)
+            leg(1,'h')
+            leg(3,'h')
+            time.sleep(1)
             leg(1,'d')
             leg(1,'f')
             time.sleep(0.2)
-            leg(1,'default')
+            leg(1,'o')
             time.sleep(0.2)
             leg(3,'d')
             leg(3,'f')
             time.sleep(0.2)
-            leg(3,'default')
+            leg(3,'o')
             time.sleep(1)
             leg(2,'d')
             leg(2,'f')
@@ -361,11 +366,19 @@ def accel_test_menu():
             time.sleep(0.3)
             leg(4,'default')
             front=0
+            leg(1,"default")
+            leg(3,"default")
             time.sleep(0.7)
             buzzer.start(30)
+            eyelight(True)
             buzzer.ChangeFrequency(440)
             time.sleep(0.5)
+            eyelight(False)
             buzzer.stop()
+            time.sleep(0.1)
+            eyelight(True)
+            time.sleep(0.1)
+            eyelight(False)
 
 
         time.sleep(0.2)
