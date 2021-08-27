@@ -308,6 +308,8 @@ def accel_test_menu():
     time.sleep(1)
     os.system('cls' if os.name == 'nt' else 'clear')
 
+    front=0
+
     while(True):
         accelerometer_data = accel.get_accel_data()
 
@@ -318,7 +320,55 @@ def accel_test_menu():
             buzzer.ChangeFrequency(7)
         else:
             buzzer.stop()
-        time.sleep(0.15)
+
+        if accelerometer_data['x'] < -5 and accelerometer_data['y'] > -2 and accelerometer_data['y'] < 2 and accelerometer_data['z'] > -2 and accelerometer_data['z'] < 2:
+            front+=1
+        else:
+            front=0
+
+        if front > 19:
+            buzzer.start(30)
+            buzzer.ChangeFrequency(880)
+            time.sleep(0.1)
+            buzzer.stop()
+            time.sleep(0.1)
+            buzzer.start(30)
+            buzzer.ChangeFrequency(880)
+            time.sleep(0.1)
+            leg(2,'o')
+            leg(4,'o')
+            time.sleep(0.5)
+            leg(1,'c')
+            leg(3,'c')
+            time.sleep(2)
+            leg(1,'d')
+            leg(1,'f')
+            time.sleep(0.2)
+            leg(1,'default')
+            time.sleep(0.2)
+            leg(3,'d')
+            leg(3,'f')
+            time.sleep(0.2)
+            leg(3,'default')
+            time.sleep(1)
+            leg(2,'d')
+            leg(2,'f')
+            time.sleep(0.2)
+            leg(2,'default')
+            time.sleep(0.2)
+            leg(4,'d')
+            leg(4,'f')
+            time.sleep(0.3)
+            leg(4,'default')
+            front=0
+            time.sleep(0.7)
+            buzzer.start(30)
+            buzzer.ChangeFrequency(440)
+            time.sleep(0.5)
+            buzzer.stop()
+
+
+        time.sleep(0.2)
 
 
 
@@ -329,7 +379,7 @@ if __name__ == "__main__":
     buzzer.ChangeFrequency(3)
     time.sleep(0.7)
     buzzer.stop()
-    time.sleep(0.5)
+    time.sleep(0.3)
     eyelight(True)
     time.sleep(0.1)
     eyelight(False)
@@ -337,7 +387,7 @@ if __name__ == "__main__":
     eyelight(True)
     time.sleep(0.05)
     eyelight(False)
-    time.sleep(1)
+    time.sleep(0.3)
     spider_pos("default")
     buzzer.start(30)
     buzzer.ChangeFrequency(440)
