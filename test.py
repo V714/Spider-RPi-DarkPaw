@@ -80,8 +80,9 @@ def leg(which,position="none"):
     if position == "none":
         pass
     elif position == "default":
-        for i in which:
-            servo(i,50)
+        servo(which[0],50)
+        servo(which[1],20)
+        servo(which[2],15)
     elif position == "u":
         servo(which[1],100)
     elif position == "d":
@@ -115,14 +116,15 @@ async def move_leg(which,where="none"):
     if where == "none":
         pass
     elif where == "default":
-        for i in which:
-            servo(i,50)
+            servo(which[0],50)
+            servo(which[1],30)
+            servo(which[2],20)
     elif where == "forward":
         if leg == 2 or leg == 4:
             servo(which[0],100)
             await asyncio.sleep(0.2)
             servo(which[1],0)
-            servo(which[2],0)
+            servo(which[2],100)
             await asyncio.sleep(0.1)
             servo(which[0],0)
             await asyncio.sleep(0.1)
@@ -134,7 +136,7 @@ async def move_leg(which,where="none"):
             servo(which[0],0)
             await asyncio.sleep(0.2)
             servo(which[1],0)
-            servo(which[2],0)
+            servo(which[2],100)
             await asyncio.sleep(0.1)
             servo(which[0],100)
             await asyncio.sleep(0.1)
@@ -385,38 +387,14 @@ def accel_test_menu():
             buzzer.ChangeFrequency(880)
             time.sleep(0.1)
             buzzer.stop()
-            leg(2,'o')
-            leg(4,'o')
-            time.sleep(0.5)
-            leg(1,'c')
             leg(3,'c')
-            time.sleep(0.5)
-            leg(1,'h')
-            leg(3,'h')
-            time.sleep(1)
-            leg(1,'d')
-            leg(1,'f')
-            time.sleep(0.2)
-            leg(1,'o')
             time.sleep(0.2)
             leg(3,'d')
             leg(3,'f')
             time.sleep(0.2)
-            leg(3,'o')
-            time.sleep(1)
-            leg(2,'d')
-            leg(2,'f')
-            time.sleep(0.2)
-            leg(2,'default')
-            time.sleep(0.2)
-            leg(4,'d')
-            leg(4,'f')
-            time.sleep(0.3)
-            leg(4,'default')
+            leg(3,'default')
             front=0
-            leg(1,"default")
-            leg(3,"default")
-            time.sleep(0.7)
+            time.sleep(0.4)
             buzzer.start(30)
             eyelight(True)
             buzzer.ChangeFrequency(440)
@@ -464,26 +442,21 @@ def init():
 
 async def moving():
     task = asyncio.create_task(move_leg(3,'forward'))
-    task2 = asyncio.create_task(move_leg(2,'forward'))
-    task3 = asyncio.create_task(move_leg(1,'forward'))
-    task4 = asyncio.create_task(move_leg(4,'forward'))
-
     await task
-    time.sleep(0.3)
-    await task2
-    time.sleep(0.3)
-    await task3
-    time.sleep(0.3)
-    await task4
-    time.sleep(0.3)
+    await asyncio.sleep(0.2)
+    task = asyncio.create_task(move_leg(2,'forward'))
+    await task
+    await asyncio.sleep(0.2)
 
+    task = asyncio.create_task(move_leg(1,'forward'))
+    await task
+    await asyncio.sleep(0.2)
+
+    task = asyncio.create_task(move_leg(4,'forward'))
+    await task
+    await asyncio.sleep(0.2)
 
 if __name__ == "__main__":
     get_data()
     init()
-    while(True):
-        key = getkey()
-
-        if key == 'a':
-            print("\nCLICKED")
-            asyncio.run(moving())
+    accel_test_menu()
