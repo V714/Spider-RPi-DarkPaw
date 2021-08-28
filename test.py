@@ -6,6 +6,7 @@ import asyncio
 import Adafruit_PCA9685
 from mpu6050 import mpu6050
 import RPi.GPIO as GPIO
+import random as rnd
 
 pwm = Adafruit_PCA9685.PCA9685()
 pwm.set_pwm_freq(50)
@@ -456,7 +457,38 @@ async def moving():
     await task
     await asyncio.sleep(0.2)
 
+def keep_alive():
+    servo1 = 50
+    servo2 = 50
+    servo4 = 50
+    servo5 = 50
+    servo7 = 50
+    servo8 = 50
+    servo10 = 50
+    servo11 = 50
+
+    while(True):
+        servo1 = servo1+rnd.randint(-3,3)
+        servo2 = servo2+rnd.randint(-3,3)
+        servo4 = servo4+rnd.randint(-3,3)
+        servo5 = servo5+rnd.randint(-3,3)
+        servo7 = servo7+rnd.randint(-3,3)
+        servo8 = servo8+rnd.randint(-3,3)
+        servo10 = servo10+rnd.randint(-3,3)
+        servo11 = servo11+rnd.randint(-3,3)
+
+
+        servo(1,servo1)
+        servo(2,servo2)
+        servo(4,servo4)
+        servo(5,servo5)
+        servo(7,servo7)
+        servo(8,servo8)
+        servo(10,servo10)
+        servo(11,servo11)
+        time.sleep(0.1)
+
 if __name__ == "__main__":
     get_data()
     init()
-    accel_test_menu()
+    keep_alive()
