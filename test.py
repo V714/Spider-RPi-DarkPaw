@@ -2,6 +2,7 @@ from getkey import getkey, keys
 from calibrate import calibrate as clb
 import os
 import time
+import asyncio
 import Adafruit_PCA9685
 from mpu6050 import mpu6050
 import RPi.GPIO as GPIO
@@ -95,6 +96,39 @@ def leg(which,position="none"):
         servo(which[2],0)
     elif position == "h":
         servo(which[0],50)
+
+
+async def move_leg(which,where="none"):
+    if int(which) == 1:
+        which = [0,1,2]
+    elif int(which) == 2:
+        which = [3,4,5]
+    elif int(which) == 3:
+        which = [6,7,8]
+    elif int(which) == 4:
+        which = [9,10,11]
+    else:
+        print("Wrong value, expected number in range 1-4!")
+        time.sleep(1.5)
+
+    if where == "none":
+        pass
+    elif where == "default":
+        for i in which:
+            servo(i,50)
+    elif where == "forward":
+        servo(which[0],100)
+        await asyncio.sleep(0.4)
+        servo(which[1],0)
+        servo(which[2],0)
+        await asyncio.sleep(0.2)
+        servo(which[0],100)
+        await asyncio.sleep(0.2)
+        servo(which[1],50)
+        servo(which[2],50)
+        await asyncio.sleep(0.2)
+        servo(which[0],50)
+
 
 def spider_pos(position="none"):
     all_legs = [1,2,3,4]
@@ -383,10 +417,7 @@ def accel_test_menu():
 
         time.sleep(0.2)
 
-
-
-if __name__ == "__main__":
-    get_data()
+def init():
     print("Hello world...")
     buzzer.start(50)
     buzzer.ChangeFrequency(3)
@@ -416,5 +447,29 @@ if __name__ == "__main__":
     buzzer.ChangeFrequency(698)
     time.sleep(0.1)
     buzzer.stop()
-    accel_test_menu()
+
+async def moving():
+    task = asyncio.create_task(move_leg(3,'forward'))
+    task2 = asyncio.create_task(move_leg(2,'forward'))
+    task3 = asyncio.create_task(move_leg(1,'forward'))
+    task4 = asyncio.create_task(move_leg(4,'forward'))
+
+    await task
+    await asyncio.sleep(0.3)
+    await task2
+    await asyncio.sleep(0.3)
+    await task3
+    await asyncio.sleep(0.3)
+    await task4
+    await asyncio.sleep(0.3)
+
+
+if __name__ == "__main__":
+    get_data()
     
+    while(True):
+        key = getkey()
+
+        if key == 'a':
+            print("\nCLICKED")
+            asyncio.run(moving())
