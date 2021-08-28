@@ -99,6 +99,7 @@ def leg(which,position="none"):
 
 
 async def move_leg(which,where="none"):
+    leg=which
     if int(which) == 1:
         which = [0,1,2]
     elif int(which) == 2:
@@ -117,17 +118,30 @@ async def move_leg(which,where="none"):
         for i in which:
             servo(i,50)
     elif where == "forward":
-        servo(which[0],100)
-        await asyncio.sleep(0.4)
-        servo(which[1],0)
-        servo(which[2],0)
-        await asyncio.sleep(0.2)
-        servo(which[0],100)
-        await asyncio.sleep(0.2)
-        servo(which[1],50)
-        servo(which[2],50)
-        await asyncio.sleep(0.2)
-        servo(which[0],50)
+        if leg == 2 or leg == 4:
+            servo(which[0],100)
+            await asyncio.sleep(0.2)
+            servo(which[1],0)
+            servo(which[2],0)
+            await asyncio.sleep(0.1)
+            servo(which[0],0)
+            await asyncio.sleep(0.1)
+            servo(which[1],50)
+            servo(which[2],50)
+            await asyncio.sleep(0.1)
+            servo(which[0],50)
+        else:
+            servo(which[0],0)
+            await asyncio.sleep(0.2)
+            servo(which[1],0)
+            servo(which[2],0)
+            await asyncio.sleep(0.1)
+            servo(which[0],100)
+            await asyncio.sleep(0.1)
+            servo(which[1],50)
+            servo(which[2],50)
+            await asyncio.sleep(0.1)
+            servo(which[0],50)
 
 
 def spider_pos(position="none"):
@@ -455,18 +469,18 @@ async def moving():
     task4 = asyncio.create_task(move_leg(4,'forward'))
 
     await task
-    await asyncio.sleep(0.3)
+    time.sleep(0.3)
     await task2
-    await asyncio.sleep(0.3)
+    time.sleep(0.3)
     await task3
-    await asyncio.sleep(0.3)
+    time.sleep(0.3)
     await task4
-    await asyncio.sleep(0.3)
+    time.sleep(0.3)
 
 
 if __name__ == "__main__":
     get_data()
-    
+    init()
     while(True):
         key = getkey()
 
