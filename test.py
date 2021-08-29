@@ -443,18 +443,14 @@ def init():
 
 async def moving():
     task = asyncio.create_task(move_leg(3,'forward'))
+    task2 = asyncio.create_task(move_leg(2,'forward'))
     await task
-    await asyncio.sleep(0.2)
-    task = asyncio.create_task(move_leg(2,'forward'))
-    await task
-    await asyncio.sleep(0.2)
+    await task2
+    task3 = asyncio.create_task(move_leg(1,'forward'))
 
-    task = asyncio.create_task(move_leg(1,'forward'))
-    await task
-    await asyncio.sleep(0.2)
-
-    task = asyncio.create_task(move_leg(4,'forward'))
-    await task
+    task4 = asyncio.create_task(move_leg(4,'forward'))
+    await task3
+    await task4
     await asyncio.sleep(0.2)
 
 def keep_alive():
@@ -467,15 +463,16 @@ def keep_alive():
     servo10 = 50
     servo11 = 50
 
+    speed=1
     while(True):
-        servo1 = servo1+rnd.randint(-3,3)
-        servo2 = servo2+rnd.randint(-3,3)
-        servo4 = servo4+rnd.randint(-3,3)
-        servo5 = servo5+rnd.randint(-3,3)
-        servo7 = servo7+rnd.randint(-3,3)
-        servo8 = servo8+rnd.randint(-3,3)
-        servo10 = servo10+rnd.randint(-3,3)
-        servo11 = servo11+rnd.randint(-3,3)
+        servo1 = servo1+rnd.randint(-speed,speed)
+        servo2 = servo2+rnd.randint(-speed,speed)
+        servo4 = servo4+rnd.randint(-speed,speed)
+        servo5 = servo5+rnd.randint(-speed,speed)
+        servo7 = servo7+rnd.randint(-speed,speed)
+        servo8 = servo8+rnd.randint(-speed,speed)
+        servo10 = servo10+rnd.randint(-speed,speed)
+        servo11 = servo11+rnd.randint(-speed,speed)
 
 
         servo(1,servo1)
@@ -486,9 +483,9 @@ def keep_alive():
         servo(8,servo8)
         servo(10,servo10)
         servo(11,servo11)
-        time.sleep(0.1)
+        time.sleep(0.01)
 
 if __name__ == "__main__":
     get_data()
-    init()
-    keep_alive()
+    for i in range(10):
+        asyncio.run(moving())
