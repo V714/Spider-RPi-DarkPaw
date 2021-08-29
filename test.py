@@ -2,7 +2,7 @@ from getkey import getkey, keys
 from calibrate import calibrate as clb
 import os
 import time
-import asyncio
+import threading
 import Adafruit_PCA9685
 from mpu6050 import mpu6050
 import RPi.GPIO as GPIO
@@ -100,7 +100,7 @@ def leg(which,position="none"):
         servo(which[0],50)
 
 
-async def move_leg(which,where="none"):
+def move_leg(which,where="none"):
     leg=which
     if int(which) == 1:
         which = [0,1,2]
@@ -123,27 +123,27 @@ async def move_leg(which,where="none"):
     elif where == "forward":
         if leg == 2 or leg == 4:
             servo(which[0],100)
-            await asyncio.sleep(0.2)
+            time.sleep(0.2)
             servo(which[1],0)
             servo(which[2],100)
-            await asyncio.sleep(0.1)
+            time.sleep(0.1)
             servo(which[0],0)
-            await asyncio.sleep(0.1)
+            time.sleep(0.1)
             servo(which[1],50)
             servo(which[2],50)
-            await asyncio.sleep(0.1)
+            time.sleep(0.1)
             servo(which[0],50)
         else:
             servo(which[0],0)
-            await asyncio.sleep(0.2)
+            time.sleep(0.2)
             servo(which[1],0)
             servo(which[2],100)
-            await asyncio.sleep(0.1)
+            time.sleep(0.1)
             servo(which[0],100)
-            await asyncio.sleep(0.1)
+            time.sleep(0.1)
             servo(which[1],50)
             servo(which[2],50)
-            await asyncio.sleep(0.1)
+            time.sleep(0.1)
             servo(which[0],50)
 
 
@@ -441,18 +441,6 @@ def init():
     time.sleep(0.1)
     buzzer.stop()
 
-async def moving():
-    task = asyncio.create_task(move_leg(3,'forward'))
-    task2 = asyncio.create_task(move_leg(2,'forward'))
-    await task
-    await task2
-    task3 = asyncio.create_task(move_leg(1,'forward'))
-
-    task4 = asyncio.create_task(move_leg(4,'forward'))
-    await task3
-    await task4
-    await asyncio.sleep(0.2)
-
 def keep_alive():
     servo1 = 50
     servo2 = 50
@@ -463,7 +451,7 @@ def keep_alive():
     servo10 = 50
     servo11 = 50
 
-    speed=1
+    speed=1    
     while(True):
         servo1 = servo1+rnd.randint(-speed,speed)
         servo2 = servo2+rnd.randint(-speed,speed)
@@ -487,5 +475,5 @@ def keep_alive():
 
 if __name__ == "__main__":
     get_data()
-    for i in range(10):
-        asyncio.run(moving())
+    init()
+    keep_alive()
