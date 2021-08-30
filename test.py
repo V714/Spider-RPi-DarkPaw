@@ -474,71 +474,27 @@ def keep_alive():
         time.sleep(0.01)
 
 
-front_legs=[80,40]
-back_legs=[40,80]
-any_leg_up=False
-leg_up=[False,False,False,False]
+def leg_step(which,where):
+    if int(which) == 1:
+        which = [0,1,2]
+    elif int(which) == 2:
+        which = [3,4,5]
+    elif int(which) == 3:
+        which = [6,7,8]
+    elif int(which) == 4:
+        which = [9,10,11]
+    else:
+        print("Wrong value, expected number in range 1-4!")
+        time.sleep(1.5)
 
-def front_step(which):
-    if which == 0: 
-        leg_up[0]=True
-        leg(1,"d")
-        leg(1,"f")
-        time.sleep(0.1)
-        servo(0,100)
-        front_legs[0]=100
-        leg(1,"u")
-        leg(1,"n")
-        time.sleep(0.3)
-        leg_up[0]=False
+    servo(which[1],0)
+    servo(which[2],100)
+    time.sleep(0.4)
+    servo(which[0],where)
+    servo(which[1],100)
+    servo(which[2],0)
+    time.sleep(0.3)
 
-    elif which == 1: 
-        leg_up[2]=True
-        leg(3,"d")
-        leg(3,"f")
-        time.sleep(0.1)
-        servo(6,100)
-        front_legs[1]=100
-        leg(3,"u")
-        leg(3,"n")
-        time.sleep(0.3)
-        leg_up[2]=False
-    any_leg_up=False
-
-
-def front_step_b(which):
-    if which == 0: 
-        leg_up[1]=True
-        leg(2,"d")
-        leg(2,"f")
-        time.sleep(0.1)
-        servo(3,0)
-        back_legs[0]=0
-        leg(2,"u")
-        leg(2,"n")
-        time.sleep(0.3)
-        leg_up[1]=False
-
-    elif which == 1: 
-        leg_up[3]=True
-        leg(4,"d")
-        leg(4,"f")
-        time.sleep(0.1)
-        servo(9,0)
-        back_legs[1]=0
-        leg(4,"u")
-        leg(4,"n")
-        time.sleep(0.3)
-        leg_up[3]=False
-    any_leg_up=False
-
-def stepgo(leg_up,front_legs,back_legs):
-    
-    if leg_up[0]:servo(0,front_legs[0])
-    if leg_up[1]:servo(3,back_legs[0])
-    if leg_up[2]:servo(6,front_legs[1])
-    if leg_up[3]:servo(9,back_legs[1])
-    time.sleep(0.5)
 
 if __name__ == "__main__":
 
@@ -546,41 +502,8 @@ if __name__ == "__main__":
     
     move_forward=True
     spider_pos("up")
-    time.sleep(1)
-    servo(0,front_legs[0])
-    servo(3,back_legs[0])
-    servo(6,front_legs[1])
-    servo(9,back_legs[1])
+    time.sleep(0.1)
+    while(True):
+        x = input()
+        leg_step(1,x)
 
-    while(move_forward):
-
-        for i in range(len(front_legs)):
-            if(front_legs[i]<=0):
-                if any_leg_up:
-                    pass
-                else:
-                    any_leg_up=True
-                    threading.Thread(target=front_step, args=(i,)).start()
-                    
-            else:
-                if i == 0 and not leg_up[0]:
-                    front_legs[i]-=1
-                if i == 1 and not leg_up[2]:
-                    front_legs[i]-=1
-
-        for i in range(len(back_legs)):
-            if(back_legs[i]>=0):
-                if any_leg_up:
-                    pass
-                else:
-                    any_leg_up=True
-                    threading.Thread(target=front_step_b, args=(i,)).start()
-                    
-            else:
-                if i == 0 and not leg_up[1]:
-                    back_legs[i]+=1
-                if i == 1 and not leg_up[3]:
-                    back_legs[i]+=1
-
-
-        threading.Thread(target=stepgo,args=(leg_up,front_legs,back_legs,)).start()
