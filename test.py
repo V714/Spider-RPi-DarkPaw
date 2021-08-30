@@ -499,6 +499,8 @@ def front_step(which):
         leg(3,"n")
         time.sleep(0.3)
         leg_up[2]=False
+    any_leg_up=False
+
 
 def front_step_b(which):
     if which == 0: 
@@ -522,6 +524,7 @@ def front_step_b(which):
         leg(4,"n")
         time.sleep(0.3)
         leg_up[3]=False
+    any_leg_up=False
 
 def stepgo(leg_up,front_legs,back_legs):
     
@@ -529,6 +532,7 @@ def stepgo(leg_up,front_legs,back_legs):
     if leg_up[1]:servo(3,back_legs[0])
     if leg_up[2]:servo(6,front_legs[1])
     if leg_up[3]:servo(9,back_legs[1])
+    time.sleep(0.5)
 
 if __name__ == "__main__":
 
@@ -551,19 +555,29 @@ if __name__ == "__main__":
                 if any_leg_up:
                     pass
                 else:
+                    any_leg_up=True
                     threading.Thread(target=front_step, args=(i,)).start()
+                    
             else:
-                front_legs[i]-=1
+                if i == 0 and not leg_up[0]:
+                    front_legs[i]-=1
+                if i == 1 and not leg_up[2]:
+                    front_legs[i]-=1
 
         for i in range(len(back_legs)):
             if(back_legs[i]>=0):
                 if any_leg_up:
                     pass
                 else:
+                    any_leg_up=True
                     threading.Thread(target=front_step_b, args=(i,)).start()
+                    
             else:
-                back_legs[i]+=1
+                if i == 0 and not leg_up[1]:
+                    back_legs[i]+=1
+                if i == 1 and not leg_up[3]:
+                    back_legs[i]+=1
 
 
         threading.Thread(target=stepgo,args=(leg_up,front_legs,back_legs,)).start()
-
+        time.sleep(1)
