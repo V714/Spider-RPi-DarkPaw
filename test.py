@@ -473,7 +473,99 @@ def keep_alive():
         servo(11,servo11)
         time.sleep(0.01)
 
+
+any_leg_up=False
+leg_up=[False,False,False,False]
+
+def front_step(which):
+    if which == 0: 
+        leg_up[0]=True
+        leg(1,"d")
+        leg(1,"f")
+        time.sleep(0.1)
+        servo(0,100)
+        leg(1,"u")
+        leg(1,"n")
+        time.sleep(0.3)
+        leg_up[0]=False
+
+    elif which == 1: 
+        leg_up[2]=True
+        leg(3,"d")
+        leg(3,"f")
+        time.sleep(0.1)
+        servo(6,100)
+        leg(3,"u")
+        leg(3,"n")
+        time.sleep(0.3)
+        leg_up[2]=False
+
+def front_step_b(which):
+    if which == 0: 
+        leg_up[1]=True
+        leg(2,"d")
+        leg(2,"f")
+        time.sleep(0.1)
+        servo(3,100)
+        leg(2,"u")
+        leg(2,"n")
+        time.sleep(0.3)
+        leg_up[1]=False
+
+    elif which == 1: 
+        leg_up[3]=True
+        leg(4,"d")
+        leg(4,"f")
+        time.sleep(0.1)
+        servo(9,100)
+        leg(4,"u")
+        leg(4,"n")
+        time.sleep(0.3)
+        leg_up[3]=False
+
+
+
 if __name__ == "__main__":
+
     get_data()
     init()
-    keep_alive()
+    
+    front_legs=[80,60]
+    back_legs=[60,80]
+    move_forward=True
+    spider_pos("up")
+    time.sleep(1)
+    servo(0,front_legs[0])
+    servo(3,back_legs[0])
+    servo(6,front_legs[1])
+    servo(9,back_legs[1])
+
+    while(move_forward):
+
+        for i in range(len(front_legs)):
+            if(front_legs[i]<=0):
+                if any_leg_up:
+                    pass
+                else:
+                    threading.Thread(target=front_step, args=(i,)).start()
+            else:
+                front_legs[i]-=1
+
+        for i in range(len(back_legs)):
+            if(back_legs[i]>=0):
+                if any_leg_up:
+                    pass
+                else:
+                    threading.Thread(target=front_step_b, args=(i,)).start()
+            else:
+                back_legs[i]+=1
+
+
+
+        if leg_up[0]:servo(0,front_legs[0])
+        if leg_up[1]:servo(3,back_legs[0])
+        if leg_up[2]:servo(6,front_legs[1])
+        if leg_up[3]:servo(9,back_legs[1])
+        time.sleep(0.03)
+        
+
