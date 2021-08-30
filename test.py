@@ -523,15 +523,19 @@ def front_step_b(which):
         time.sleep(0.3)
         leg_up[3]=False
 
-
+def stepgo(leg_up,front_legs,back_legs):
+    
+    if leg_up[0]:servo(0,front_legs[0])
+    if leg_up[1]:servo(3,back_legs[0])
+    if leg_up[2]:servo(6,front_legs[1])
+    if leg_up[3]:servo(9,back_legs[1])
 
 if __name__ == "__main__":
 
     get_data()
-    init()
     
-    front_legs=[80,60]
-    back_legs=[60,80]
+    front_legs=[80,40]
+    back_legs=[40,80]
     move_forward=True
     spider_pos("up")
     time.sleep(1)
@@ -561,11 +565,5 @@ if __name__ == "__main__":
                 back_legs[i]+=1
 
 
-
-        if leg_up[0]:servo(0,front_legs[0])
-        if leg_up[1]:servo(3,back_legs[0])
-        if leg_up[2]:servo(6,front_legs[1])
-        if leg_up[3]:servo(9,back_legs[1])
-        time.sleep(0.03)
-        
+        threading.Thread(target=stepgo,args=(leg_up,front_legs,back_legs,)).start()
 
