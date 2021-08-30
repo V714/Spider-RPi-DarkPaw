@@ -489,11 +489,13 @@ def leg_step(which,where):
 
     servo(which[1],0)
     servo(which[2],100)
-    time.sleep(0.4)
+    time.sleep(0.1)
     servo(which[0],where)
+    time.sleep(0.1)
     servo(which[1],100)
+    time.sleep(0.2)
     servo(which[2],0)
-    time.sleep(0.3)
+    time.sleep(0.2)
 
 
 if __name__ == "__main__":
@@ -505,5 +507,5 @@ if __name__ == "__main__":
     time.sleep(0.1)
     while(True):
         x = input()
-        leg_step(1,x)
+        leg_step(3,x)
 
