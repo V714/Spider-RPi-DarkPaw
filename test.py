@@ -474,6 +474,8 @@ def keep_alive():
         time.sleep(0.01)
 
 
+front_legs=[80,40]
+back_legs=[40,80]
 any_leg_up=False
 leg_up=[False,False,False,False]
 
@@ -484,6 +486,7 @@ def front_step(which):
         leg(1,"f")
         time.sleep(0.1)
         servo(0,100)
+        front_legs[0]=100
         leg(1,"u")
         leg(1,"n")
         time.sleep(0.3)
@@ -495,6 +498,7 @@ def front_step(which):
         leg(3,"f")
         time.sleep(0.1)
         servo(6,100)
+        front_legs[1]=100
         leg(3,"u")
         leg(3,"n")
         time.sleep(0.3)
@@ -508,7 +512,8 @@ def front_step_b(which):
         leg(2,"d")
         leg(2,"f")
         time.sleep(0.1)
-        servo(3,100)
+        servo(3,0)
+        back_legs[0]=0
         leg(2,"u")
         leg(2,"n")
         time.sleep(0.3)
@@ -519,7 +524,8 @@ def front_step_b(which):
         leg(4,"d")
         leg(4,"f")
         time.sleep(0.1)
-        servo(9,100)
+        servo(9,0)
+        back_legs[1]=0
         leg(4,"u")
         leg(4,"n")
         time.sleep(0.3)
@@ -538,8 +544,6 @@ if __name__ == "__main__":
 
     get_data()
     
-    front_legs=[80,40]
-    back_legs=[40,80]
     move_forward=True
     spider_pos("up")
     time.sleep(1)
@@ -580,4 +584,3 @@ if __name__ == "__main__":
 
 
         threading.Thread(target=stepgo,args=(leg_up,front_legs,back_legs,)).start()
-        time.sleep(1)
