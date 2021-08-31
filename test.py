@@ -359,7 +359,8 @@ def accel_test_menu():
     print("Entering accelerometer test...")
     time.sleep(1)
     os.system('cls' if os.name == 'nt' else 'clear')
-
+    rh_legs=50
+    lh_legs=50
     front=0
 
     while(True):
@@ -373,10 +374,25 @@ def accel_test_menu():
         else:
             buzzer.stop()
 
+
         if accelerometer_data['x'] < -6 and accelerometer_data['y'] > -2 and accelerometer_data['y'] < 2 and accelerometer_data['z'] > -2 and accelerometer_data['z'] < 5:
             front+=1
         else:
             front=0
+
+        if accelerometer_data['y'] > 0.5:
+            if lh_legs <=5 or rh_legs >= 95:
+                pass
+            else:
+                lh_legs-=4
+                rh_legs+=4
+       
+        if accelerometer_data['y'] < -0.5 :
+            if lh_legs >=95 or rh_legs <= 5:
+                pass
+            else:
+                lh_legs+=4
+                rh_legs-=4
 
         if front > 10:
             buzzer.start(30)
@@ -407,8 +423,12 @@ def accel_test_menu():
             time.sleep(0.1)
             eyelight(False)
 
-
-        time.sleep(0.2)
+        
+        servo(1,lh_legs)
+        servo(4,lh_legs)
+        servo(7,rh_legs)
+        servo(10,rh_legs)
+        time.sleep(0.01)
 
 def init():
     print("Hello world...")
@@ -493,7 +513,6 @@ def leg_step(which,where):
     servo(which[0],where)
     time.sleep(0.1)
     servo(which[1],100)
-    time.sleep(0.2)
     servo(which[2],0)
     time.sleep(0.2)
 
@@ -501,11 +520,9 @@ def leg_step(which,where):
 if __name__ == "__main__":
 
     get_data()
-    
-    move_forward=True
-    spider_pos("up")
-    time.sleep(0.1)
-    while(True):
-        x = input()
-        leg_step(3,x)
+    '''while(True):
+       for i in range(1,5):
+           x = input()
+           leg_step(i,x)'''
+    accel_test_menu()
 
