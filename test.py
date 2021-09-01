@@ -514,7 +514,26 @@ def leg_step(which,where):
     time.sleep(0.1)
     servo(which[1],100)
     servo(which[2],0)
-    time.sleep(0.2)
+    time.sleep(0.02)
+
+def walk(f="f"):
+    spider_pos("default")
+    while(f=="f"):
+        leg_step(1,100)
+        leg_step(4,0)
+        servo(0,50)
+        servo(9,50)
+        servo(3,100)
+        servo(6,0)
+        time.sleep(1)
+        leg_step(2,0)
+        leg_step(3,100)
+        servo(3,50)
+        servo(6,50)
+        servo(0,0)
+        servo(9,100)
+        time.sleep(1)
+
 
 
 if __name__ == "__main__":
@@ -524,5 +543,5 @@ if __name__ == "__main__":
        for i in range(1,5):
            x = input()
            leg_step(i,x)'''
-    accel_test_menu()
+    walk()
 
