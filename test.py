@@ -567,84 +567,84 @@ def forward(step):
     if action == "forward":
         if step == 0:
             servo(0,50)
-            servo(1,20)
-            servo(2,15)
+            servo(1,80)
+            servo(2,10)
             
-            servo(3,50)
-            servo(4,20)
-            servo(5,15)
+            servo(3,0)
+            servo(4,80)
+            servo(5,10)
             
-            servo(6,50)
-            servo(7,20)
-            servo(8,15)
+            servo(6,100)
+            servo(7,80)
+            servo(8,10)
             
-            servo(9,50)
-            servo(10,20)
-            servo(11,15)
+            servo(9,100)
+            servo(10,80)
+            servo(11,10)
         elif step == 1:
             servo(0,50)
-            servo(1,60) # + 40
-            servo(2,35) # + 20
+            servo(1,40)
+            servo(2,20)
             
-            servo(3,60) # + 10
-            servo(4,20)
-            servo(5,15)
+            servo(3,0)
+            servo(4,100)
+            servo(5,10)
             
-            servo(6,40) # - 10
-            servo(7,20)
-            servo(8,15)
+            servo(6,100)
+            servo(7,100)
+            servo(8,10)
             
-            servo(9,60) # + 10
-            servo(10,20)
-            servo(11,15)
+            servo(9,100)
+            servo(10,100)
+            servo(11,10)
         elif step == 2:
-            servo(0,70) # + 20
-            servo(1,100) # + 40
-            servo(2,55) # + 20
+            servo(0,75)
+            servo(1,0)
+            servo(2,30)
             
-            servo(3,70) # + 10
-            servo(4,20)
-            servo(5,15)
+            servo(3,30)
+            servo(4,100)
+            servo(5,10)
             
-            servo(6,30) # - 10
-            servo(7,20)
-            servo(8,15)
+            servo(6,80)
+            servo(7,100)
+            servo(8,10)
             
-            servo(9,70) # + 10
-            servo(10,20)
-            servo(11,15)
+            servo(9,100)
+            servo(10,0)
+            servo(11,30)
         elif step == 3:
-            servo(0,95) # + 20
-            servo(1,90) # - 10
-            servo(2,45) # - 10
+            servo(0,90)
+            servo(1,30)
+            servo(2,25)
             
-            servo(3,80) # + 10
-            servo(4,20)
-            servo(5,15)
+            servo(3,70)
+            servo(4,100)
+            servo(5,10)
             
-            servo(6,20) # - 10
-            servo(7,20)
-            servo(8,15)
+            servo(6,30)
+            servo(7,100)
+            servo(8,10)
             
-            servo(9,80) # + 10
-            servo(10,20)
-            servo(11,15)
+            servo(9,0)
+            servo(10,0)
+            servo(11,30)
         elif step == 4:
-            servo(0,95) # + 20
-            servo(1,0) # 0
-            servo(2,15) # - 10
+            servo(0,100)
+            servo(1,100)
+            servo(2,10)
             
-            servo(3,90) # + 10
-            servo(4,20)
-            servo(5,15)
+            servo(3,70)
+            servo(4,100)
+            servo(5,10)
             
-            servo(6,10) # - 10
-            servo(7,20)
-            servo(8,15)
+            servo(6,30)
+            servo(7,100)
+            servo(8,10)
             
-            servo(9,90) # + 10
-            servo(10,20)
-            servo(11,15)
+            servo(9,50)
+            servo(10,100)
+            servo(11,10)
         """ elif step == 5:
         elif step == 6:
         elif step == 7:
@@ -671,5 +671,8 @@ if __name__ == "__main__":
     while(True):
         forward(test_int)
         test_int+=1
+        if test_int > 4:
+            test_int = 0
+            time.sleep(1)
         time.sleep(0.2)
 
