@@ -1,3 +1,4 @@
+from jinja2 import Undefined
 from getkey import getkey, keys
 from calibrate import calibrate as clb
 import os
@@ -560,97 +561,98 @@ def walk(f="f"):
         servo(0,20)
         servo(9,70)
         time.sleep(0.2)
+
 action = "forward"
+
+def leg_stepf(leg,step):
+    if step == 0:
+        servo((leg*3)+0,0)
+        servo((leg*3)+1,30)
+        servo((leg*3)+2,20)
+    elif step == 1:
+        servo((leg*3)+0,33)
+        servo((leg*3)+1,0)
+        servo((leg*3)+2,30)
+    elif step == 2:
+        servo((leg*3)+0,67)
+        servo((leg*3)+1,0)
+        servo((leg*3)+2,30)
+    elif step == 3:
+        servo((leg*3)+0,90)
+        servo((leg*3)+1,30)
+        servo((leg*3)+2,20)
+    elif step == 4:
+        servo((leg*3)+0,100)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 5:
+        servo((leg*3)+0,67)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 6:
+        servo((leg*3)+0,33)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 7:
+        servo((leg*3)+0,0)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    else:
+        print("8 steps, 0-7")
+
+def leg_stepb(leg,step):
+    if step == 0:
+        servo((leg*3)+0,100)
+        servo((leg*3)+1,30)
+        servo((leg*3)+2,20)
+    elif step == 1:
+        servo((leg*3)+0,67)
+        servo((leg*3)+1,0)
+        servo((leg*3)+2,30)
+    elif step == 2:
+        servo((leg*3)+0,33)
+        servo((leg*3)+1,0)
+        servo((leg*3)+2,30)
+    elif step == 3:
+        servo((leg*3)+0,10)
+        servo((leg*3)+1,30)
+        servo((leg*3)+2,20)
+    elif step == 4:
+        servo((leg*3)+0,0)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 5:
+        servo((leg*3)+0,33)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 6:
+        servo((leg*3)+0,67)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 7:
+        servo((leg*3)+0,100)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    else:
+        print("8 steps, 0-7")
+
+def leg_step(leg,step):
+    new_step = step % 8
+    if leg == 0 or leg == 2:
+        leg_stepf(leg,new_step)
+    else:
+        leg_stepb(leg,new_step)
+
 
 def forward(step):
     global action
+
     if action == "forward":
-        if step == 0:
-            servo(0,50)
-            servo(1,80)
-            servo(2,10)
-            
-            servo(3,0)
-            servo(4,80)
-            servo(5,10)
-            
-            servo(6,100)
-            servo(7,80)
-            servo(8,10)
-            
-            servo(9,100)
-            servo(10,80)
-            servo(11,10)
-        elif step == 1:
-            servo(0,50)
-            servo(1,40)
-            servo(2,20)
-            
-            servo(3,0)
-            servo(4,100)
-            servo(5,10)
-            
-            servo(6,100)
-            servo(7,100)
-            servo(8,10)
-            
-            servo(9,100)
-            servo(10,100)
-            servo(11,10)
-        elif step == 2:
-            servo(0,75)
-            servo(1,0)
-            servo(2,30)
-            
-            servo(3,30)
-            servo(4,100)
-            servo(5,10)
-            
-            servo(6,80)
-            servo(7,100)
-            servo(8,10)
-            
-            servo(9,100)
-            servo(10,0)
-            servo(11,30)
-        elif step == 3:
-            servo(0,90)
-            servo(1,30)
-            servo(2,25)
-            
-            servo(3,70)
-            servo(4,100)
-            servo(5,10)
-            
-            servo(6,30)
-            servo(7,100)
-            servo(8,10)
-            
-            servo(9,0)
-            servo(10,0)
-            servo(11,30)
-        elif step == 4:
-            servo(0,100)
-            servo(1,100)
-            servo(2,10)
-            
-            servo(3,70)
-            servo(4,100)
-            servo(5,10)
-            
-            servo(6,30)
-            servo(7,100)
-            servo(8,10)
-            
-            servo(9,50)
-            servo(10,100)
-            servo(11,10)
-        """ elif step == 5:
-        elif step == 6:
-        elif step == 7:
-        elif step == 8:
-        elif step == 9:
-        elif step == 10: """
+        leg_stepf(0,step+0)
+        leg_stepb(1,step+2)
+        leg_stepf(2,step+4)
+        leg_stepb(3,step+6)
+
     else:
         for i in range(12):
             if i % 3 == 1:
@@ -673,6 +675,6 @@ if __name__ == "__main__":
         test_int+=1
         if test_int > 4:
             test_int = 0
-            time.sleep(1)
+            time.sleep(0.8)
         time.sleep(0.2)
 
