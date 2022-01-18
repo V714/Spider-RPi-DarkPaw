@@ -22,6 +22,25 @@ buzzer = GPIO.PWM(12,440)
 #   5 BCM - Light
 #  12 BCM - Buzzer
 
+"""
+
+0  1  2    - 1st leg -> v
+
+3  4  5    - 2nd leg -> ^
+
+6  7  8    - 3rd leg <- v
+
+9  10 11   - 4th leg <- ^
+
+|   |  |
+|   | 1 far/near 0
+|   |
+| 1 up/down 0
+|
+1 open/close 0
+
+"""
+
 file_found = False
 servo_min = [300] * 12
 servo_max = [300] * 12
@@ -428,7 +447,7 @@ def accel_test_menu():
         servo(4,lh_legs)
         servo(7,rh_legs)
         servo(10,rh_legs)
-        time.sleep(0.01)
+        time.sleep(0.03)
 
 def init():
     print("Hello world...")
@@ -541,8 +560,105 @@ def walk(f="f"):
         servo(0,20)
         servo(9,70)
         time.sleep(0.2)
+action = "forward"
 
-
+def forward(step):
+    global action
+    if action == "forward":
+        if step == 0:
+            servo(0,50)
+            servo(1,20)
+            servo(2,15)
+            
+            servo(3,50)
+            servo(4,20)
+            servo(5,15)
+            
+            servo(6,50)
+            servo(7,20)
+            servo(8,15)
+            
+            servo(9,50)
+            servo(10,20)
+            servo(11,15)
+        elif step == 1:
+            servo(0,50)
+            servo(1,60) # + 40
+            servo(2,35) # + 20
+            
+            servo(3,60) # + 10
+            servo(4,20)
+            servo(5,15)
+            
+            servo(6,40) # - 10
+            servo(7,20)
+            servo(8,15)
+            
+            servo(9,60) # + 10
+            servo(10,20)
+            servo(11,15)
+        elif step == 2:
+            servo(0,70) # + 20
+            servo(1,100) # + 40
+            servo(2,55) # + 20
+            
+            servo(3,70) # + 10
+            servo(4,20)
+            servo(5,15)
+            
+            servo(6,30) # - 10
+            servo(7,20)
+            servo(8,15)
+            
+            servo(9,70) # + 10
+            servo(10,20)
+            servo(11,15)
+        elif step == 3:
+            servo(0,95) # + 20
+            servo(1,90) # - 10
+            servo(2,45) # - 10
+            
+            servo(3,80) # + 10
+            servo(4,20)
+            servo(5,15)
+            
+            servo(6,20) # - 10
+            servo(7,20)
+            servo(8,15)
+            
+            servo(9,80) # + 10
+            servo(10,20)
+            servo(11,15)
+        elif step == 4:
+            servo(0,95) # + 20
+            servo(1,0) # 0
+            servo(2,15) # - 10
+            
+            servo(3,90) # + 10
+            servo(4,20)
+            servo(5,15)
+            
+            servo(6,10) # - 10
+            servo(7,20)
+            servo(8,15)
+            
+            servo(9,90) # + 10
+            servo(10,20)
+            servo(11,15)
+        """ elif step == 5:
+        elif step == 6:
+        elif step == 7:
+        elif step == 8:
+        elif step == 9:
+        elif step == 10: """
+    else:
+        for i in range(12):
+            if i % 3 == 1:
+                servo(i,50)
+            elif i % 3 == 2:
+                servo(i,20)
+            elif i % 3 == 0:
+                servo(i,15)
 
 if __name__ == "__main__":
 
@@ -551,5 +667,9 @@ if __name__ == "__main__":
        for i in range(1,5):
            x = input()
            leg_step(i,x)'''
-    walk()
+    test_int = 0
+    while(True):
+        forward(test_int)
+        test_int+=1
+        time.sleep(0.2)
 
