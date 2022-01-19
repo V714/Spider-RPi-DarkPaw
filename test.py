@@ -221,27 +221,35 @@ def leg_stepf(leg,step):
         servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     elif step == 5:
-        servo((leg*3)+0,80)
+        servo((leg*3)+0,86)
         servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     elif step == 6:
-        servo((leg*3)+0,60)
+        servo((leg*3)+0,72)
         servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     elif step == 7:
-        servo((leg*3)+0,40)
+        servo((leg*3)+0,58)
         servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     elif step == 8:
-        servo((leg*3)+0,20)
+        servo((leg*3)+0,44)
         servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     elif step == 9:
+        servo((leg*3)+0,30)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 10:
+        servo((leg*3)+0,15)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 11:
         servo((leg*3)+0,0)
         servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     else:
-        print("10 steps, 0-9")
+        print("12 steps, 0-11")
 
 def leg_stepb(leg,step):
     if step == 0:
@@ -265,30 +273,38 @@ def leg_stepb(leg,step):
         servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     elif step == 5:
-        servo((leg*3)+0,20)
+        servo((leg*3)+0,14)
         servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     elif step == 6:
-        servo((leg*3)+0,40)
+        servo((leg*3)+0,28)
         servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     elif step == 7:
-        servo((leg*3)+0,60)
+        servo((leg*3)+0,42)
         servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     elif step == 8:
-        servo((leg*3)+0,80)
+        servo((leg*3)+0,56)
         servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     elif step == 9:
+        servo((leg*3)+0,70)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 10:
+        servo((leg*3)+0,85)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 11:
         servo((leg*3)+0,100)
         servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     else:
-        print("8 steps, 0-7")
+        print("12 steps, 0-11")
 
 def leg_step(leg,step):
-    new_step = step % 10
+    new_step = step % 12
     if leg == 0 or leg == 2:
         leg_stepf(leg,new_step)
     else:
@@ -300,9 +316,9 @@ def forward(step):
 
     if action == "forward":
         leg_stepf(0,step+0)
-        leg_stepb(1,step+2)
-        leg_stepf(2,step+4)
-        leg_stepb(3,step+6)
+        leg_stepb(1,step+3)
+        leg_stepf(2,step+6)
+        leg_stepb(3,step+9)
 
     else:
         for i in range(12):
@@ -324,5 +340,5 @@ if __name__ == "__main__":
     while(True):
         forward(test_int)
         test_int+=1
-        time.sleep(0.2)
+        time.sleep(0.05)
 
