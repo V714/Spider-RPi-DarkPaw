@@ -229,15 +229,15 @@ def forward_steps_frontlegs(leg,step):
         servo((leg*3)+2,10)
     elif step == 6:
         servo((leg*3)+0,72)
-        servo((leg*3)+1,70)
+        servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     elif step == 7:
         servo((leg*3)+0,58)
-        servo((leg*3)+1,50)
+        servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     elif step == 8:
         servo((leg*3)+0,44)
-        servo((leg*3)+1,70)
+        servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     elif step == 9:
         servo((leg*3)+0,30)
@@ -282,15 +282,15 @@ def forward_steps_rearlegs(leg,step):
         servo((leg*3)+2,10)
     elif step == 6:
         servo((leg*3)+0,28)
-        servo((leg*3)+1,70)
+        servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     elif step == 7:
         servo((leg*3)+0,42)
-        servo((leg*3)+1,50)
+        servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     elif step == 8:
         servo((leg*3)+0,56)
-        servo((leg*3)+1,70)
+        servo((leg*3)+1,100)
         servo((leg*3)+2,10)
     elif step == 9:
         servo((leg*3)+0,70)
@@ -514,5 +514,5 @@ if __name__ == "__main__":
         elif key == 'd':
             change_action("turn_right")
 
-        time.sleep(0.07)
+        time.sleep(0.04)
 
