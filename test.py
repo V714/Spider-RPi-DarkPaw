@@ -502,8 +502,10 @@ if __name__ == "__main__":
         
 
         if key == 'w':
+            change_direction(True)
             change_action("forward")
         elif key == 's':
+            change_direction(True)
             change_action("backward")
         elif key == 'q':
             change_action("forward_left")
@@ -514,5 +516,5 @@ if __name__ == "__main__":
         elif key == 'd':
             change_action("turn_right")
 
-        time.sleep(0.04)
+        time.sleep(0.01)
 
