@@ -1,6 +1,7 @@
 from getkey import getkey, keys
 from calibrate import calibrate as clb
 import os
+import sys
 import time
 import threading
 import Adafruit_PCA9685
@@ -199,7 +200,7 @@ def init():
 
 action = "forward"
 
-def leg_stepf(leg,step):
+def forward_steps_frontlegs(leg,step):
     if step == 0:
         servo((leg*3)+0,0)
         servo((leg*3)+1,30)
@@ -251,7 +252,7 @@ def leg_stepf(leg,step):
     else:
         print("12 steps, 0-11")
 
-def leg_stepb(leg,step):
+def forward_steps_rearlegs(leg,step):
     if step == 0:
         servo((leg*3)+0,100)
         servo((leg*3)+1,30)
@@ -303,23 +304,30 @@ def leg_stepb(leg,step):
     else:
         print("12 steps, 0-11")
 
-def leg_step(leg,step):
+def forward_step(leg,step):
     new_step = step % 12
     if leg == 0 or leg == 2:
-        leg_stepf(leg,new_step)
+        forward_steps_frontlegs(leg,new_step)
     else:
-        leg_stepb(leg,new_step)
+        forward_steps_rearlegs(leg,new_step)
 
 
-def forward(step):
+def make_action(step):
     global action
 
     if action == "forward":
-        leg_stepf(0,step+0)
-        leg_stepb(1,step+3)
-        leg_stepf(2,step+6)
-        leg_stepb(3,step+9)
-
+        forward_step(0,step+0)
+        forward_step(1,step+3)
+        forward_step(2,step+6)
+        forward_step(3,step+9)
+    elif action == "turn_left":
+        forward_step(1,step+3)
+        forward_step(2,step+6)
+        forward_step(3,step+9)
+    elif action == "turn_right":
+        forward_step(0,step+0)
+        forward_step(1,step+3)
+        forward_step(3,step+9)
     else:
         for i in range(12):
             if i % 3 == 1:
@@ -337,8 +345,16 @@ if __name__ == "__main__":
            x = input()
            leg_step(i,x)'''
     test_int = 0
+    if sys.argv[1]:
+        if sys.argv[1] == 0:
+            action="forward"
+        elif sys.argv[1]==1:
+            action="turn_left"
+        elif sys.argv[1]==2:
+            action="turn_right"
+
     while(True):
-        forward(test_int)
+        make_action(test_int)
         test_int+=1
-        time.sleep(0.05)
+        time.sleep(0.07)
 
