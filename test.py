@@ -1,7 +1,6 @@
 from getkey import getkey, keys
 from calibrate import calibrate as clb
 import os
-import sys
 import time
 import threading
 import Adafruit_PCA9685
@@ -198,9 +197,11 @@ def init():
     time.sleep(0.1)
     buzzer.stop()
 
-action = "forward"
+direction ="forward"
+action = "forward_backward"
 
 def forward_steps_frontlegs(leg,step):
+    step = step % 12
     if step == 0:
         servo((leg*3)+0,0)
         servo((leg*3)+1,30)
@@ -253,6 +254,7 @@ def forward_steps_frontlegs(leg,step):
         print("12 steps, 0-11")
 
 def forward_steps_rearlegs(leg,step):
+    step = step % 12
     if step == 0:
         servo((leg*3)+0,100)
         servo((leg*3)+1,30)
@@ -304,38 +306,169 @@ def forward_steps_rearlegs(leg,step):
     else:
         print("12 steps, 0-11")
 
-def forward_step(leg,step):
-    new_step = step % 12
-    if leg == 0 or leg == 2:
-        forward_steps_frontlegs(leg,new_step)
+def forward_turn_rearleg(leg,step):
+    step = step % 12
+    if step == 0:
+        servo((leg*3)+0,60)
+        servo((leg*3)+1,30)
+        servo((leg*3)+2,20)
+    elif step == 1:
+        servo((leg*3)+0,55)
+        servo((leg*3)+1,0)
+        servo((leg*3)+2,30)
+    elif step == 2:
+        servo((leg*3)+0,50)
+        servo((leg*3)+1,0)
+        servo((leg*3)+2,30)
+    elif step == 3:
+        servo((leg*3)+0,45)
+        servo((leg*3)+1,30)
+        servo((leg*3)+2,20)
+    elif step == 4:
+        servo((leg*3)+0,40)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 5:
+        servo((leg*3)+0,42)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 6:
+        servo((leg*3)+0,45)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 7:
+        servo((leg*3)+0,48)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 8:
+        servo((leg*3)+0,51)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 9:
+        servo((leg*3)+0,54)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 10:
+        servo((leg*3)+0,57)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 11:
+        servo((leg*3)+0,60)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
     else:
-        forward_steps_rearlegs(leg,new_step)
+        print("12 steps, 0-11")
 
+def forward_turn_frontlegs(leg,step):
+    step = step % 12
+    if step == 0:
+        servo((leg*3)+0,40)
+        servo((leg*3)+1,30)
+        servo((leg*3)+2,20)
+    elif step == 1:
+        servo((leg*3)+0,45)
+        servo((leg*3)+1,0)
+        servo((leg*3)+2,30)
+    elif step == 2:
+        servo((leg*3)+0,50)
+        servo((leg*3)+1,0)
+        servo((leg*3)+2,30)
+    elif step == 3:
+        servo((leg*3)+0,55)
+        servo((leg*3)+1,30)
+        servo((leg*3)+2,20)
+    elif step == 4:
+        servo((leg*3)+0,60)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 5:
+        servo((leg*3)+0,57)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 6:
+        servo((leg*3)+0,54)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 7:
+        servo((leg*3)+0,51)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 8:
+        servo((leg*3)+0,48)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 9:
+        servo((leg*3)+0,45)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 10:
+        servo((leg*3)+0,42)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    elif step == 11:
+        servo((leg*3)+0,40)
+        servo((leg*3)+1,100)
+        servo((leg*3)+2,10)
+    else:
+        print("12 steps, 0-11")
 
-def make_action(step):
+def make_a_step(step):
     global action
+    if action == "forward_backward":
+            forward_steps_frontlegs(0,step)
+            forward_steps_rearlegs(1,step+3)
+            forward_steps_frontlegs(2,step+6)
+            forward_steps_rearlegs(3,step+9)
 
-    if action == "forward":
-        forward_step(0,step+0)
-        forward_step(1,step+3)
-        forward_step(2,step+6)
-        forward_step(3,step+9)
+    elif action == "forward_left":
+            forward_turn_frontlegs(0,step)
+            forward_steps_rearlegs(1,step+3)
+            forward_steps_frontlegs(2,step+6)
+            forward_steps_rearlegs(3,step+9)
+
+    elif action == "forward_right":
+            forward_steps_frontlegs(0,step)
+            forward_steps_rearlegs(1,step+3)
+            forward_turn_frontlegs(2,step+6)
+            forward_steps_rearlegs(3,step+9)
+
     elif action == "turn_left":
-        forward_step(1,step+3)
-        forward_step(2,step+6)
-        forward_step(3,step+9)
+            forward_steps_rearlegs(0,step)
+            forward_steps_frontlegs(1,step+3)
+            forward_steps_frontlegs(2,step+6)
+            forward_steps_rearlegs(3,step+9)
+
     elif action == "turn_right":
-        forward_step(0,step+0)
-        forward_step(1,step+3)
-        forward_step(3,step+9)
+            forward_steps_frontlegs(0,step)
+            forward_steps_rearlegs(1,step+3)
+            forward_steps_rearlegs(2,step+6)
+            forward_steps_frontlegs(3,step+9)
+
+def change_direction(direction_forward):
+    global direction
+    if direction_forward:
+        direction="forward"
     else:
-        for i in range(12):
-            if i % 3 == 1:
-                servo(i,50)
-            elif i % 3 == 2:
-                servo(i,20)
-            elif i % 3 == 0:
-                servo(i,15)
+        direction="backward"
+
+def change_action(new_action):
+    global action
+    action = new_action
+
+def action_control_screen():
+    global direction
+    global action
+    print(f"\n  ############################ Spider Settings ############################\n")
+    print(f"    Press: u - forward + change direction to forward \n")
+    print(f"           d - forward + change direction to backwards \n")
+    print(f"           a - turn left \n")
+    print(f"           d - turn right \n")
+    print(f"           q - forward left \n")
+    print(f"           e - forward right \n\n")
+    print(f"                Action Now:  {action} \n")
+    print(f"                Dir.   Now:  {direction} \n")
+    print(f"           D - Next Leg \n\n")
+    print(f"           Q - Exit \n")
 
 if __name__ == "__main__":
 
@@ -345,16 +478,39 @@ if __name__ == "__main__":
            x = input()
            leg_step(i,x)'''
     test_int = 0
-    if sys.argv[1]:
-        if sys.argv[1] == 0:
-            action="forward"
-        elif sys.argv[1]==1:
-            action="turn_left"
-        elif sys.argv[1]==2:
-            action="turn_right"
-
     while(True):
-        make_action(test_int)
-        test_int+=1
+        
+        os.system('cls' if os.name == 'nt' else 'clear')
+        action_control_screen()
+        make_a_step(test_int)
+        key = getkey()
+        if direction=="forward":
+            test_int+=1
+        elif direction=="backward":
+            test_int-=1
+        else:
+            print("no direction")
+            time.sleep(3)
+        
+
+        if key == 'w':
+            change_direction(True)
+            change_action("forward_backward")
+        elif key == 's':
+            change_direction(False)
+            change_action("forward_backward")
+        elif key == 'q':
+            change_direction(True)
+            change_action("forward_left")
+        elif key == 'e':
+            change_direction(True)
+            change_action("forward_right")
+        elif key == 'a':
+            change_direction(True)
+            change_action("turn_left")
+        elif key == 'd':
+            change_direction(True)
+            change_action("turn_right")
+
         time.sleep(0.07)
 
