@@ -421,6 +421,12 @@ def make_a_step(step):
             forward_steps_frontlegs(2,step+6)
             forward_steps_rearlegs(3,step+9)
 
+    elif action == "backward":
+            forward_steps_rearlegs(0,step)
+            forward_steps_frontlegs(1,step+3)
+            forward_steps_rearlegs(2,step+6)
+            forward_steps_frontlegs(3,step+9)
+
     elif action == "forward_left":
             forward_turn_frontlegs(0,step)
             forward_steps_rearlegs(1,step+3)
