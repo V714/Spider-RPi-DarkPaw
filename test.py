@@ -200,6 +200,7 @@ def init():
 direction ="forward"
 action = "forward_backward"
 
+
 def forward_steps_frontlegs(leg,step):
     step = step % 12
     if step == 0:
@@ -228,15 +229,15 @@ def forward_steps_frontlegs(leg,step):
         servo((leg*3)+2,10)
     elif step == 6:
         servo((leg*3)+0,72)
-        servo((leg*3)+1,100)
+        servo((leg*3)+1,70)
         servo((leg*3)+2,10)
     elif step == 7:
         servo((leg*3)+0,58)
-        servo((leg*3)+1,100)
+        servo((leg*3)+1,50)
         servo((leg*3)+2,10)
     elif step == 8:
         servo((leg*3)+0,44)
-        servo((leg*3)+1,100)
+        servo((leg*3)+1,70)
         servo((leg*3)+2,10)
     elif step == 9:
         servo((leg*3)+0,30)
@@ -281,15 +282,15 @@ def forward_steps_rearlegs(leg,step):
         servo((leg*3)+2,10)
     elif step == 6:
         servo((leg*3)+0,28)
-        servo((leg*3)+1,100)
+        servo((leg*3)+1,70)
         servo((leg*3)+2,10)
     elif step == 7:
         servo((leg*3)+0,42)
-        servo((leg*3)+1,100)
+        servo((leg*3)+1,50)
         servo((leg*3)+2,10)
     elif step == 8:
         servo((leg*3)+0,56)
-        servo((leg*3)+1,100)
+        servo((leg*3)+1,70)
         servo((leg*3)+2,10)
     elif step == 9:
         servo((leg*3)+0,70)
@@ -414,7 +415,7 @@ def forward_turn_frontlegs(leg,step):
 
 def make_a_step(step):
     global action
-    if action == "forward_backward":
+    if action == "forward":
             forward_steps_frontlegs(0,step)
             forward_steps_rearlegs(1,step+3)
             forward_steps_frontlegs(2,step+6)
@@ -478,6 +479,7 @@ if __name__ == "__main__":
            x = input()
            leg_step(i,x)'''
     test_int = 0
+    change_direction(True)
     while(True):
         
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -494,22 +496,16 @@ if __name__ == "__main__":
         
 
         if key == 'w':
-            change_direction(True)
-            change_action("forward_backward")
+            change_action("forward")
         elif key == 's':
-            change_direction(False)
-            change_action("forward_backward")
+            change_action("backward")
         elif key == 'q':
-            change_direction(True)
             change_action("forward_left")
         elif key == 'e':
-            change_direction(True)
             change_action("forward_right")
         elif key == 'a':
-            change_direction(True)
             change_action("turn_left")
         elif key == 'd':
-            change_direction(True)
             change_action("turn_right")
 
         time.sleep(0.07)
