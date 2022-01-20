@@ -307,111 +307,7 @@ def forward_steps_rearlegs(leg,step):
     else:
         print("12 steps, 0-11")
 
-def forward_turn_rearleg(leg,step):
-    step = step % 12
-    if step == 0:
-        servo((leg*3)+0,60)
-        servo((leg*3)+1,30)
-        servo((leg*3)+2,20)
-    elif step == 1:
-        servo((leg*3)+0,55)
-        servo((leg*3)+1,0)
-        servo((leg*3)+2,30)
-    elif step == 2:
-        servo((leg*3)+0,50)
-        servo((leg*3)+1,0)
-        servo((leg*3)+2,30)
-    elif step == 3:
-        servo((leg*3)+0,45)
-        servo((leg*3)+1,30)
-        servo((leg*3)+2,20)
-    elif step == 4:
-        servo((leg*3)+0,40)
-        servo((leg*3)+1,100)
-        servo((leg*3)+2,10)
-    elif step == 5:
-        servo((leg*3)+0,42)
-        servo((leg*3)+1,100)
-        servo((leg*3)+2,10)
-    elif step == 6:
-        servo((leg*3)+0,45)
-        servo((leg*3)+1,100)
-        servo((leg*3)+2,10)
-    elif step == 7:
-        servo((leg*3)+0,48)
-        servo((leg*3)+1,100)
-        servo((leg*3)+2,10)
-    elif step == 8:
-        servo((leg*3)+0,51)
-        servo((leg*3)+1,100)
-        servo((leg*3)+2,10)
-    elif step == 9:
-        servo((leg*3)+0,54)
-        servo((leg*3)+1,100)
-        servo((leg*3)+2,10)
-    elif step == 10:
-        servo((leg*3)+0,57)
-        servo((leg*3)+1,100)
-        servo((leg*3)+2,10)
-    elif step == 11:
-        servo((leg*3)+0,60)
-        servo((leg*3)+1,100)
-        servo((leg*3)+2,10)
-    else:
-        print("12 steps, 0-11")
 
-def forward_turn_frontlegs(leg,step):
-    step = step % 12
-    if step == 0:
-        servo((leg*3)+0,40)
-        servo((leg*3)+1,30)
-        servo((leg*3)+2,20)
-    elif step == 1:
-        servo((leg*3)+0,45)
-        servo((leg*3)+1,0)
-        servo((leg*3)+2,30)
-    elif step == 2:
-        servo((leg*3)+0,50)
-        servo((leg*3)+1,0)
-        servo((leg*3)+2,30)
-    elif step == 3:
-        servo((leg*3)+0,55)
-        servo((leg*3)+1,30)
-        servo((leg*3)+2,20)
-    elif step == 4:
-        servo((leg*3)+0,60)
-        servo((leg*3)+1,100)
-        servo((leg*3)+2,10)
-    elif step == 5:
-        servo((leg*3)+0,57)
-        servo((leg*3)+1,100)
-        servo((leg*3)+2,10)
-    elif step == 6:
-        servo((leg*3)+0,54)
-        servo((leg*3)+1,100)
-        servo((leg*3)+2,10)
-    elif step == 7:
-        servo((leg*3)+0,51)
-        servo((leg*3)+1,100)
-        servo((leg*3)+2,10)
-    elif step == 8:
-        servo((leg*3)+0,48)
-        servo((leg*3)+1,100)
-        servo((leg*3)+2,10)
-    elif step == 9:
-        servo((leg*3)+0,45)
-        servo((leg*3)+1,100)
-        servo((leg*3)+2,10)
-    elif step == 10:
-        servo((leg*3)+0,42)
-        servo((leg*3)+1,100)
-        servo((leg*3)+2,10)
-    elif step == 11:
-        servo((leg*3)+0,40)
-        servo((leg*3)+1,100)
-        servo((leg*3)+2,10)
-    else:
-        print("12 steps, 0-11")
 
 def make_a_step(step):
     global action
@@ -422,34 +318,10 @@ def make_a_step(step):
             forward_steps_rearlegs(3,step+9)
 
     elif action == "backward":
-            forward_steps_rearlegs(0,step)
-            forward_steps_frontlegs(1,step+3)
-            forward_steps_rearlegs(2,step+6)
-            forward_steps_frontlegs(3,step+9)
-
-    elif action == "forward_left":
-            forward_turn_frontlegs(0,step)
-            forward_steps_rearlegs(1,step+3)
-            forward_steps_frontlegs(2,step+6)
-            forward_steps_rearlegs(3,step+9)
-
-    elif action == "forward_right":
-            forward_steps_frontlegs(0,step)
-            forward_steps_rearlegs(1,step+3)
-            forward_turn_frontlegs(2,step+6)
-            forward_steps_rearlegs(3,step+9)
-
-    elif action == "turn_left":
-            forward_steps_rearlegs(0,step)
-            forward_steps_frontlegs(1,step+3)
-            forward_steps_frontlegs(2,step+6)
-            forward_steps_rearlegs(3,step+9)
-
-    elif action == "turn_right":
-            forward_steps_frontlegs(0,step)
-            forward_steps_rearlegs(1,step+3)
-            forward_steps_rearlegs(2,step+6)
-            forward_steps_frontlegs(3,step+9)
+            forward_steps_rearlegs(0,step+9)
+            forward_steps_frontlegs(1,step+6)
+            forward_steps_rearlegs(2,step+3)
+            forward_steps_frontlegs(3,step)
 
 def change_direction(direction_forward):
     global direction
@@ -477,6 +349,18 @@ def action_control_screen():
     print(f"           D - Next Leg \n\n")
     print(f"           Q - Exit \n")
 
+test_int = 0
+
+def start_walking():
+    global test_int
+    while(True):
+        if direction=="forward":
+            test_int+=1
+        elif direction=="backward":
+            test_int-=1
+        make_a_step(test_int)
+        time.sleep(0.05)
+    
 if __name__ == "__main__":
 
     get_data()
@@ -484,21 +368,15 @@ if __name__ == "__main__":
        for i in range(1,5):
            x = input()
            leg_step(i,x)'''
-    test_int = 0
+    
     change_direction(True)
+    moving = threading.Thread(target=start_moving)
+    moving.start()
     while(True):
         
         os.system('cls' if os.name == 'nt' else 'clear')
         action_control_screen()
-        make_a_step(test_int)
         key = getkey()
-        if direction=="forward":
-            test_int+=1
-        elif direction=="backward":
-            test_int-=1
-        else:
-            print("no direction")
-            time.sleep(3)
         
 
         if key == 'w':
@@ -516,5 +394,5 @@ if __name__ == "__main__":
         elif key == 'd':
             change_action("turn_right")
 
-        time.sleep(0.01)
+        time.sleep(0.2)
 
