@@ -323,6 +323,13 @@ def make_a_step(step):
             forward_steps_rearlegs(2,step+3)
             forward_steps_frontlegs(3,step)
 
+    elif action == "stay":
+            forward_steps_frontlegs(0,7)
+            forward_steps_rearlegs(1,7)
+            forward_steps_frontlegs(2,7)
+            forward_steps_rearlegs(3,7)
+
+
 def change_direction(direction_forward):
     global direction
     if direction_forward:
@@ -353,7 +360,10 @@ test_int = 0
 
 def start_walking():
     global test_int
+    global action
     while(True):
+        if action=="stay":
+            test_int=0
         if direction=="forward":
             test_int+=1
         elif direction=="backward":
@@ -370,7 +380,7 @@ if __name__ == "__main__":
            leg_step(i,x)'''
     
     change_direction(True)
-    moving = threading.Thread(target=start_moving)
+    moving = threading.Thread(target=start_walking)
     moving.start()
     while(True):
         
@@ -393,6 +403,8 @@ if __name__ == "__main__":
             change_action("turn_left")
         elif key == 'd':
             change_action("turn_right")
+        elif key == " ":
+            change_action("stay")
 
         time.sleep(0.2)
 
