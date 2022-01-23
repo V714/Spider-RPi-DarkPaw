@@ -8,6 +8,10 @@ import Adafruit_PCA9685
 from mpu6050 import mpu6050
 import RPi.GPIO as GPIO
 import random as rnd
+import socketio
+
+sio = socketio.Server(cors_allowed_origins='*')
+app = socketio.WSGIApp(sio)
 
 pwm = Adafruit_PCA9685.PCA9685()
 pwm.set_pwm_freq(50)
@@ -46,7 +50,7 @@ file_found = False
 servo_min = [300] * 12
 servo_max = [300] * 12
 data = ""
-
+eyelight_bool=False
 
 def get_data():
     global file_found
@@ -65,10 +69,13 @@ def get_data():
 
 
 def eyelight(bool):
+    global eyelight_bool
     if bool:
         GPIO.output(5,GPIO.HIGH)
+        eyelight_bool=True
     else:
         GPIO.output(5,GPIO.LOW)
+        eyelight_bool=False
 
 
 def servo(x,value):
@@ -217,18 +224,137 @@ def make_a_step(step):
         step_functions.backward_steps_rearlegs(2,step+3,servo)
         step_functions.backward_steps_frontlegs(3,step,servo)
 
-    elif action == "turn_left":
+    elif action == "forward2":
         step_functions.turn_left_frontlegs(0,step,servo)
         step_functions.turn_left_rearlegs(1,step+6,servo)
-        step_functions.turn_left_frontlegs(2,step,servo)
-        step_functions.turn_left_rearlegs(3,step+6,servo)
+        step_functions.turn_left_frontlegs(2,step+6,servo)
+        step_functions.turn_left_rearlegs(3,step,servo)
 
+    elif action == "backward2":
+        step_functions.turn_left_rearlegs(0,step,servo)
+        step_functions.turn_left_frontlegs(1,step+6,servo)
+        step_functions.turn_left_rearlegs(2,step+6,servo)
+        step_functions.turn_left_frontlegs(3,step,servo)
+
+    elif action == "forward_left":
+        step_functions.forward_steps_frontlegs(0,7,servo)
+        step_functions.forward_steps_rearlegs(1,7,servo)
+        step_functions.forward_steps_frontlegs(2,step+6,servo)
+        step_functions.forward_steps_rearlegs(3,step+9,servo)
+    
+    elif action == "forward_right":
+        step_functions.forward_steps_frontlegs(0,step,servo)
+        step_functions.forward_steps_rearlegs(1,step+3,servo)
+        step_functions.forward_steps_frontlegs(2,7,servo)
+        step_functions.forward_steps_rearlegs(3,7,servo)
+
+    elif action == "backward_left":
+        step_functions.backward_steps_rearlegs(0,7,servo)
+        step_functions.backward_steps_frontlegs(1,7,servo)
+        step_functions.backward_steps_rearlegs(2,step+3,servo)
+        step_functions.backward_steps_frontlegs(3,step,servo)
+    
+    elif action == "backward_right":
+        step_functions.backward_steps_rearlegs(0,step+9,servo)
+        step_functions.backward_steps_frontlegs(1,step+6,servo)
+        step_functions.backward_steps_rearlegs(2,7,servo)
+        step_functions.backward_steps_frontlegs(3,7,servo)
     elif action == "stay":
         step_functions.forward_steps_frontlegs(0,7,servo)
         step_functions.forward_steps_rearlegs(1,7,servo)
         step_functions.forward_steps_frontlegs(2,7,servo)
         step_functions.forward_steps_rearlegs(3,7,servo)
+    
+    elif action == "standup_front":
+        buzzer.start(30)
+        buzzer.ChangeFrequency(880)
+        time.sleep(0.1)
+        buzzer.stop()
+        servo(0,100)
+        servo(6,100)
+        time.sleep(0.1)
+        buzzer.start(30)
+        buzzer.ChangeFrequency(880)
+        time.sleep(0.1)
+        buzzer.stop()
+        servo(6,0)
+        servo(0,0)
+        servo(3,100)
+        servo(9,100)
+        time.sleep(0.1)
+        servo(7,0)
+        servo(8,1)
+        time.sleep(0.2)
+        servo(0,100)
+        servo(6,100)
+        time.sleep(0.1)
+        servo(3,60)
+        servo(9,60)
+        time.sleep(0.05)
+        servo(0,50)
+        servo(6,50)
+        action = "stay"
+        time.sleep(0.4)
+        buzzer.start(30)
+        eyelight(True)
+        buzzer.ChangeFrequency(440)
+        time.sleep(0.5)
+        eyelight(False)
+        buzzer.stop()
+        time.sleep(0.1)
+        eyelight(True)
+        time.sleep(0.1)
+        eyelight(False)
 
+
+    elif action == "standup_rear":
+        buzzer.start(30)
+        buzzer.ChangeFrequency(680)
+        time.sleep(0.1)
+        buzzer.stop()
+        servo(3,100)
+        servo(9,100)
+        time.sleep(0.1)
+        buzzer.start(30)
+        buzzer.ChangeFrequency(680)
+        time.sleep(0.1)
+        buzzer.stop()
+        servo(9,100)
+        servo(3,0)
+        servo(0,100)
+        servo(6,100)
+        time.sleep(1)
+        servo(4,0)
+        servo(5,100)
+        time.sleep(0.2)
+        servo(3,0)
+        servo(9,0)
+        time.sleep(0.1)
+        servo(0,60)
+        servo(6,60)
+        time.sleep(0.05)
+        servo(3,50)
+        servo(9,50)
+        action = "stay"
+        time.sleep(0.4)
+        buzzer.start(30)
+        eyelight(True)
+        buzzer.ChangeFrequency(440)
+        time.sleep(0.5)
+        eyelight(False)
+        buzzer.stop()
+        time.sleep(0.1)
+        eyelight(True)
+        time.sleep(0.1)
+        eyelight(False)
+
+    elif action == "push_down":
+        servo(1,0)
+        servo(4,0)
+        servo(7,0)
+        servo(10,0)
+        time.sleep(1)
+        action = "stay"
 
 def change_direction(direction_forward):
     global direction
@@ -271,7 +397,36 @@ def start_walking(stop):
         make_a_step(test_int)
         time.sleep(0.03)
     
-if __name__ == "__main__":
+
+get_data()
+
+@sio.on('data')
+def get_data(sid, data):
+    global action
+    global eyelight_bool
+    key = data.key
+    if key == 'W':
+        change_action("forward")
+    elif key == 'S':
+        change_action("backward")
+    elif key == 'Q':
+        change_action("forward_left")
+    elif key == 'E':
+        change_action("forward_right")
+    elif key == 'Z':
+        change_action("backward_left")
+    elif key == 'C':
+        change_action("backward_right")
+    elif key == "SPACE":
+        change_action("stay")
+    elif key == "I":
+        change_action("standup_front")
+    elif key == "B":
+        if eyelight_bool:
+            eyelight(False)
+        else:
+            eyelight(True)
+"""if __name__ == "__main__":
 
     get_data()
     '''while(True):
@@ -291,25 +446,36 @@ if __name__ == "__main__":
         
 
         if key == 'w':
-            change_direction(True)
             change_action("forward")
+        elif key == 'W':
+            change_action("forward2")
         elif key == 's':
-            change_direction(True)
             change_action("backward")
+        elif key == "S":
+            change_action("backward2")
         elif key == 'q':
             change_action("forward_left")
         elif key == 'e':
             change_action("forward_right")
+        elif key == 'z':
+            change_action("backward_left")
+        elif key == 'c':
+            change_action("backward_right")
         elif key == 'a':
             change_action("turn_left")
         elif key == 'd':
             change_action("turn_right")
         elif key == " ":
             change_action("stay")
+        elif key == "i":
+            change_action("standup_front")
+        elif key == "k":
+            change_action("standup_rear")
+        elif key == "p":
+            change_action("push_down")
         elif key == "Q":
             stop_moving=True
             moving.join()
             exit()
 
-        time.sleep(0.2)
-
+        time.sleep(0.2)"""

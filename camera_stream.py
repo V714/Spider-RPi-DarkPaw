@@ -6,17 +6,6 @@ import socketserver
 from threading import Condition
 from http import server
 
-PAGE="""\
-<html>
-<head>
-<title>Raspberry Pi - Surveillance Camera</title>
-</head>
-<body>
-<center><h1>Raspberry Pi - Surveillance Camera</h1></center>
-<center><img src="stream.mjpg" width="640" height="480"></center>
-</body>
-</html>
-"""
 
 class StreamingOutput(object):
     def __init__(self):
@@ -37,18 +26,7 @@ class StreamingOutput(object):
 
 class StreamingHandler(server.BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path == '/':
-            self.send_response(301)
-            self.send_header('Location', '/index.html')
-            self.end_headers()
-        elif self.path == '/index.html':
-            content = PAGE.encode('utf-8')
-            self.send_response(200)
-            self.send_header('Content-Type', 'text/html')
-            self.send_header('Content-Length', len(content))
-            self.end_headers()
-            self.wfile.write(content)
-        elif self.path == '/stream.mjpg':
+        if self.path == '/stream.mjpg':
             self.send_response(200)
             self.send_header('Age', 0)
             self.send_header('Cache-Control', 'no-cache, private')
@@ -84,7 +62,7 @@ with picamera.PiCamera(resolution='640x480', framerate=24) as camera:
     #camera.rotation = 90
     camera.start_recording(output, format='mjpeg')
     try:
-        address = ('', 8000)
+        address = ('', 8001)
         server = StreamingServer(address, StreamingHandler)
         server.serve_forever()
     finally:
