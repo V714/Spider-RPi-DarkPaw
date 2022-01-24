@@ -398,35 +398,7 @@ def start_walking(stop):
         time.sleep(0.03)
     
 
-get_data()
-
-@sio.on('data')
-def get_data(sid, data):
-    global action
-    global eyelight_bool
-    key = data.key
-    if key == 'W':
-        change_action("forward")
-    elif key == 'S':
-        change_action("backward")
-    elif key == 'Q':
-        change_action("forward_left")
-    elif key == 'E':
-        change_action("forward_right")
-    elif key == 'Z':
-        change_action("backward_left")
-    elif key == 'C':
-        change_action("backward_right")
-    elif key == "SPACE":
-        change_action("stay")
-    elif key == "I":
-        change_action("standup_front")
-    elif key == "B":
-        if eyelight_bool:
-            eyelight(False)
-        else:
-            eyelight(True)
-"""if __name__ == "__main__":
+if __name__ == "__main__":
 
     get_data()
     '''while(True):
@@ -478,4 +450,4 @@ def get_data(sid, data):
             moving.join()
             exit()
 
-        time.sleep(0.2)"""
+        time.sleep(0.2)
