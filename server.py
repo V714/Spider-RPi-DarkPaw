@@ -10,7 +10,7 @@ import Adafruit_PCA9685
 from mpu6050 import mpu6050
 import RPi.GPIO as GPIO
 import random as rnd
-from camera import Camera
+from camera_pi  import Camera
 from test import get_data, eyelight, servo, make_a_step, change_direction, change_action, start_walking
 
 app = Flask(__name__)
@@ -21,22 +21,7 @@ cors = CORS(app)
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-pwm = Adafruit_PCA9685.PCA9685()
-pwm.set_pwm_freq(50)
-
-accel = mpu6050(0x68)
-
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(12,GPIO.OUT)
-GPIO.setup(5,GPIO.OUT)
-buzzer = GPIO.PWM(12,440)
-
-file_found = False
-servo_min = [300] * 12
-servo_max = [300] * 12
-data = ""
-eyelight_bool=False
-
+eyelight_bool = False
 
 
 @app.route('/')
@@ -65,6 +50,10 @@ def handleData(data):
         change_action("forward")
     elif key == 'S':
         change_action("backward")
+    elif key == 'w':
+        change_action("forward2")
+    elif key =='s':
+        change_action("backward2")
     elif key == 'Q':
         change_action("forward_left")
     elif key == 'E':
@@ -80,10 +69,11 @@ def handleData(data):
     elif key == "B":
         if eyelight_bool:
             eyelight(False)
+            eyelight_bool=False
         else:
             eyelight(True)
+            eyelight_bool=True
     key = ''
-
 
 if __name__ == "__main__":
     get_data()
@@ -91,4 +81,4 @@ if __name__ == "__main__":
     stop_moving = False
     moving = threading.Thread(target=start_walking, args= (lambda:stop_moving,))
     moving.start()
-    socketio.run(app, host='0.0.0.0',port=777, debug=True)
+    socketio.run(app, host='0.0.0.0',port=7777, debug=True)
