@@ -81,4 +81,4 @@ if __name__ == "__main__":
     stop_moving = False
     moving = threading.Thread(target=start_walking, args= (lambda:stop_moving,))
     moving.start()
-    socketio.run(app, host='0.0.0.0',port=7777, debug=True)
+    socketio.run(app, host='0.0.0.0',port=8000, debug=True)
