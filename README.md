@@ -11,7 +11,7 @@ To run everything at once - use command:
 
 ***Don't forget to edit IP in Front end main JS file - you have to put IP of your RaspberryPi***
 
-*Use Vim and command ****:%s/192.168.1.189/IP_OF_YOUR_RPI_HERE/g**** *
+*Use Vim and command* ****:%s/192.168.1.189/IP_OF_YOUR_RPI_HERE/g****
 
 
 You can put www directory contents as your default nginx website
